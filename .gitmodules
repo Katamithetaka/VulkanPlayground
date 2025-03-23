@@ -1,0 +1,6 @@
+[submodule "vendor/Vulkan-Hpp"]
+	path = vendor/Vulkan-Hpp
+	url = https://github.com/KhronosGroup/Vulkan-Hpp
+[submodule "vendor/Vulkan-ValidationLayers"]
+	path = vendor/Vulkan-ValidationLayers
+	url = https://github.com/KhronosGroup/Vulkan-ValidationLayers
