@@ -4,41 +4,32 @@
 #include <string_view>
 #include <optional>
 #include <variant>
-#include "macro_map.hpp"
 
+#ifdef _WIN32
+#ifndef LIBRARY_EXPORT
+#define LIBRARY_DLL __declspec(dllimport)
+#else
+#define LIBRARY_DLL __declspec(dllexport)
 
+#endif
+#endif
 
-#define GENERATE_ENUM_VARIANT(x) struct x {\
-    [[nodiscard]] std::string_view get_value() const noexcept { return #x; }\
+enum class ExecutionResultVariants {
+    Ok
 };
-
-
-#define DEFINE_ENUM(name, ...) namespace name {\
- MAP(GENERATE_ENUM_VARIANT, __VA_ARGS__) \
- using Type = std::variant<__VA_ARGS__>; \
-}\
-using name##Type = name::Type;
-
-
-// This defines a fake enum that can be used like this:
-// - ExecutionResultVariantsType => a std::variant with all the enum options
-// - ExecutionResultVariants => a namespace containing all variants
-// - You can initiate a variant like this:
-//      ExecutionResultVariantsType result = ExecutionResultVariants::Ok{};
-DEFINE_ENUM(ExecutionResultVariants, Ok)
 
 
 
 struct ExecutionResult {
 public:
-    ExecutionResultVariantsType result;
+ExecutionResultVariants result;
     std::optional<std::string_view> message;
 
-    static ExecutionResult Ok() { return ExecutionResult(ExecutionResultVariants::Ok{}); }
+    static ExecutionResult Ok() { return ExecutionResult(ExecutionResultVariants::Ok); }
 
 private:
 
-    ExecutionResult(ExecutionResultVariantsType type, std::optional<std::string_view> message = std::nullopt)
+    ExecutionResult(ExecutionResultVariants type, std::optional<std::string_view> message = std::nullopt)
         : result{type}, message{message}    
     {
 

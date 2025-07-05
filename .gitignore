@@ -40,3 +40,13 @@ build/
 CTestTestfile.cmake
 DartConfiguration.tcl
 Testing/
+
+
+*.ninja
+.ninja_log
+.ninja_deps
+compile_commands.json
+include/glslang
+.cache
+ninja/
+vs2022/

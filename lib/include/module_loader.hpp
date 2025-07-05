@@ -1,7 +1,10 @@
 #ifndef MODULE_LOADER_HPP
 #define MODULE_LOADER_HPP
-#ifdef _WIN32
 
+#define WIN32_LEAN_AND_MEAN 1
+#define NOMINMAX  1
+#include "common.hpp"
+#ifdef _WIN32
 
 #include <iostream>
 #include "Windows.h"
@@ -9,7 +12,7 @@
 
 namespace dlloader
 {
-	class DLLoader
+	class LIBRARY_DLL DLLoader
 	{
 
 	public:
@@ -25,7 +28,7 @@ namespace dlloader
 
 		void DLOpenLib()
 		{
-			if (!(_handle = LoadLibrary(_pathToLib.c_str()))) {
+			if (!(_handle = LoadLibraryA(_pathToLib.c_str()))) {
 				std::cerr << "Can't open and load " << _pathToLib << std::endl;
 			}
 		}
@@ -42,6 +45,8 @@ namespace dlloader
 				GetProcAddress(_handle, name.data()));
 
 			if (!function) {
+				auto a = GetProcAddress(_handle, name.data());
+				std::cout << (a == nullptr) << std::endl;
                 return std::nullopt;
 			}
 
